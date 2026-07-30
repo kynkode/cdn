@@ -3,266 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zero-Trust CDN Automator</title>
+    <title>URL Eternity Matrix | 2126</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bg-blue: #0b0d40;
-            --card-blue: #141979;
-            --accent-orange: #ff6600;
-            --accent-glow: rgba(255, 102, 0, 0.4);
-            --accent-cyan: #00ffff; 
-            --text-main: #e0e6ed;
-            --text-muted: #8892b0;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
-
-        body {
-            background-color: var(--bg-blue); color: var(--text-main);
-            display: flex; justify-content: center; align-items: flex-start;
-            min-height: 100vh; padding: 40px 20px;
-            background-image: radial-gradient(circle at 10% 20%, rgba(20, 25, 121, 0.8) 0%, transparent 20%),
-                              radial-gradient(circle at 90% 80%, rgba(255, 102, 0, 0.15) 0%, transparent 20%);
-        }
-
-        .container { width: 100%; max-width: 1000px; }
-
-        header { margin-bottom: 40px; text-align: center; border-bottom: 2px solid var(--accent-orange); padding-bottom: 20px; box-shadow: 0 10px 30px -15px var(--accent-glow); }
-        h1 { color: var(--accent-orange); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--accent-glow); }
-
-        .panel {
-            background-color: var(--card-blue); border: 1px solid rgba(255, 102, 0, 0.3);
-            border-radius: 8px; padding: 25px; margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); position: relative;
-        }
-        .panel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-orange), transparent); }
-
-        label { display: block; margin-bottom: 8px; color: var(--accent-orange); font-weight: bold; font-size: 0.9em; }
-        input[type="text"], input[type="number"] { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--text-muted); color: white; border-radius: 4px; margin-bottom: 20px; outline: none; transition: border 0.3s;}
-        input:focus { border-color: var(--accent-orange); box-shadow: 0 0 10px var(--accent-glow); }
-
-        button {
-            background-color: transparent; color: var(--accent-orange); border: 2px solid var(--accent-orange); 
-            padding: 12px 24px; font-weight: bold; text-transform: uppercase; cursor: pointer;
-            border-radius: 4px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center;
-        }
-        button:hover:not(:disabled) { background-color: var(--accent-orange); color: var(--bg-blue); }
-        button:disabled { opacity: 0.6; cursor: not-allowed; border-color: var(--text-muted); color: var(--text-muted); }
-
-        /* Loading Spinner */
-        .spinner {
-            display: none; width: 14px; height: 14px; border: 2px solid currentColor;
-            border-top: 2px solid transparent; border-radius: 50%;
-            animation: spin 1s linear infinite; margin-right: 8px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        button.is-loading .spinner { display: inline-block; }
-
-        .btn-small { float: right; padding: 5px 10px; font-size: 0.8em; margin-left: 10px; }
-        .btn-cyan { color: var(--accent-cyan); border-color: var(--accent-cyan); }
-        .btn-cyan:hover:not(:disabled) { background-color: var(--accent-cyan); color: var(--bg-blue); box-shadow: 0 0 10px var(--accent-cyan); }
-
-        .terminal {
-            background: #000; padding: 15px; border-radius: 4px; border-left: 4px solid var(--accent-orange); 
-            font-size: 0.85em; color: #0f0; max-height: 200px; overflow-y: auto; margin-top: 10px;
-        }
-
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; }
-        .data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .data-table th { color: var(--accent-orange); text-transform: uppercase; font-size: 0.85em; }
-        
-        /* Column Widths */
-        .col-hash { width: 12%; }
-        .col-link { width: 30%; }
-        .col-date { width: 18%; }
-        .col-status { width: 10%; }
-
-        .status-link { text-decoration: none; font-weight: normal; color: var(--text-muted); transition: color 0.2s; }
-        .status-link:hover { text-decoration: underline; color: white; }
-        .link-highlight { color: var(--accent-cyan); font-weight: bold; }
-
-        .status-active { color: #00ff00; font-weight: bold; }
-        .status-refreshed { color: var(--accent-cyan); font-weight: bold; }
-        .status-dead { color: #ff0000; font-weight: bold; }
-
+        /* Custom scrollbar for a sleeker look */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        .truncate-url { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
     </style>
 </head>
-<body>
+<body class="bg-slate-900 text-slate-200 font-sans min-h-screen flex flex-col">
 
-<div class="container">
-    <header>
-        <h1>Zero-Trust CDN Automator</h1>
-        <p>Yr 2126 Config • HMAC-SHA256 • Dual Link Tracking</p>
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3 text-xl font-bold text-white">
+                <i class="fa-solid fa-infinity text-brand-500"></i>
+                URL Eternity Matrix
+                <span class="bg-brand-500/20 text-brand-500 text-xs px-2 py-1 rounded-full uppercase tracking-wider">Year 2126</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="fetchLinks()" id="btn-refresh" class="bg-slate-800 hover:bg-slate-700 text-sm px-4 py-2 rounded-lg transition flex items-center gap-2 border border-slate-700">
+                    <i class="fa-solid fa-rotate"></i> Load Links
+                </button>
+                <button onclick="monitorHealth()" id="btn-health" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 text-sm px-4 py-2 rounded-lg transition flex items-center gap-2 border border-blue-900/50">
+                    <i class="fa-solid fa-heart-pulse"></i> Monitor Health
+                </button>
+            </div>
+        </div>
     </header>
 
-    <div class="panel">
-        <h2>Inject New Link Endpoint</h2>
-        <br>
-        <label>Target URL (Base CDN Link)</label>
-        <input type="text" id="urlInput" placeholder="https://web.wootly.ch/source?id=...&expire=1785403180">
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full space-y-8">
         
-        <label>Current Expiry (Unix Timestamp)</label>
-        <input type="number" id="expiryInput" placeholder="1785403180">
+        <!-- Add Link Section -->
+        <section class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 shadow-lg">
+            <h2 class="text-lg font-semibold mb-4 text-white flex items-center gap-2">
+                <i class="fa-solid fa-link"></i> Process New URL
+            </h2>
+            <form id="add-link-form" class="flex flex-col md:flex-row gap-4" onsubmit="addLink(event)">
+                <input 
+                    type="url" 
+                    id="url-input" 
+                    required 
+                    placeholder="https://example.com/file?expire=1672531199..." 
+                    class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition placeholder-slate-500"
+                >
+                <button type="submit" id="btn-submit" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-3 rounded-lg transition flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Extend to 2126
+                </button>
+            </form>
+            <p class="text-xs text-slate-400 mt-3">
+                <i class="fa-solid fa-circle-info mr-1"></i> Ensure the URL contains the <code>expire=...</code> tag for the backend to update it correctly.
+            </p>
+        </section>
 
-        <button id="injectBtn" onclick="submitLink()">
-            <span class="spinner"></span>
-            <span id="injectText">Encrypt & Inject</span>
-        </button>
-    </div>
+        <!-- Status / Notifications -->
+        <div id="notification-area" class="hidden rounded-lg p-4 text-sm font-medium transition-all duration-300"></div>
 
-    <div class="panel">
-        <h2>
-            Active Link Matrix 
-            <button class="btn-small btn-cyan" onclick="pingHealth()" id="pingBtn"><span class="spinner"></span><span class="btnText">Ping Health</span></button>
-            <button class="btn-small" onclick="fetchLinks()" id="syncBtn"><span class="spinner"></span><span class="btnText">Sync DB</span></button>
-        </h2>
-        <table class="data-table" id="linksTable">
-            <thead>
-                <tr>
-                    <th class="col-hash">Hash ID</th>
-                    <th class="col-link">Original Link</th>
-                    <th class="col-link">Yr 2126 Link</th>
-                    <th class="col-date">Original Expiry</th>
-                    <th class="col-status">Status</th>
-                </tr>
-            </thead>
-            <tbody id="linksBody">
-                <!-- Data populated by JS -->
-            </tbody>
-        </table>
-    </div>
+        <!-- Links Grid -->
+        <section>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-database"></i> Database Records
+                </h2>
+                <span id="record-count" class="text-sm text-slate-400">0 records</span>
+            </div>
 
-    <div class="panel">
-        <h2>System Terminal Logs</h2>
-        <div class="terminal" id="terminal">
-            [System] Core initialized. Waiting for secure inputs...<br>
-        </div>
-    </div>
-</div>
+            <!-- Empty State / Loading State -->
+            <div id="links-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="col-span-full py-12 text-center text-slate-500 bg-slate-800/30 rounded-xl border border-slate-700 border-dashed">
+                    <i class="fa-solid fa-satellite-dish text-3xl mb-3 opacity-50"></i>
+                    <p>No records loaded. Click "Load Links" to fetch from database.</p>
+                </div>
+            </div>
+        </section>
 
-<script>
-    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJGE727zEgmIn0zrSCywOsCIohRNdbc4znsZb7LPusH8Az_UeYHg6ehQ_W5Npg8tE_/exec";
-    const API_SECRET = "0fc86192dc7fd8bfd7a0deab68571d324c015600c5c3861fa85622c7f2769feb";
+    </main>
 
-    function logMessage(msg) {
-        const terminal = document.getElementById('terminal');
-        const time = new Date().toLocaleTimeString();
-        terminal.innerHTML += `[${time}] ${msg}<br>`;
-        terminal.scrollTop = terminal.scrollHeight;
-    }
+    <!-- Scripts -->
+    <script>
+        // Configuration
+        const CONFIG = {
+            API_URL: "https://script.google.com/macros/s/AKfycbxzbFu2TmAa8tbxR7s8dksTu3Y2rosqPQ2oLE7oDJetU2t4hNIp_hIdzlHB51NuP3l_/exec",
+            API_SECRET: "0fc86192dc7fd8bfd7a0deab68571d324c015600c5c3861fa85622c7f2769feb"
+        };
 
-    // Controls the loading spinner and disables buttons
-    function setButtonLoading(btnId, isLoading, textId) {
-        const btn = document.getElementById(btnId);
-        if (isLoading) {
-            btn.classList.add('is-loading');
-            btn.disabled = true;
-            if(textId) document.getElementById(textId).innerText = "Processing...";
-        } else {
-            btn.classList.remove('is-loading');
-            btn.disabled = false;
+        // UI Helpers
+        const showNotification = (message, type = 'success') => {
+            const el = document.getElementById('notification-area');
+            el.className = `p-4 rounded-lg text-sm font-medium mb-4 flex items-center gap-2 shadow-lg animate-fade-in ${
+                type === 'success' ? 'bg-brand-500/10 text-brand-400 border border-brand-500/20' : 
+                type === 'error' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 
+                'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+            }`;
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-info';
+            el.innerHTML = `<i class="fa-solid ${icon}"></i> ${message}`;
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 5000);
+        };
+
+        const setLoading = (buttonId, isLoading, originalText, iconClass) => {
+            const btn = document.getElementById(buttonId);
+            if (isLoading) {
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${originalText}`;
+            }
+        };
+
+        const copyToClipboard = async (text, btnElement) => {
+            try {
+                await navigator.clipboard.writeText(text);
+                const originalHTML = btnElement.innerHTML;
+                btnElement.innerHTML = `<i class="fa-solid fa-check text-brand-500"></i>`;
+                setTimeout(() => btnElement.innerHTML = originalHTML, 2000);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        };
+
+        // HMAC-SHA256 Implementation via Web Crypto API
+        async function generateSignature(action, payload, timestamp) {
+            const dataToSign = action + JSON.stringify(payload) + timestamp.toString();
+            const encoder = new TextEncoder();
+            
+            const key = await crypto.subtle.importKey(
+                "raw",
+                encoder.encode(CONFIG.API_SECRET),
+                { name: "HMAC", hash: "SHA-256" },
+                false,
+                ["sign"]
+            );
+
+            const signatureBuffer = await crypto.subtle.sign(
+                "HMAC",
+                key,
+                encoder.encode(dataToSign)
+            );
+
+            // Convert buffer to hex string
+            return Array.from(new Uint8Array(signatureBuffer))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
         }
-    }
 
-    async function generateHMAC(action, payload, timestamp) {
-        const dataStr = action + JSON.stringify(payload) + timestamp.toString();
-        const enc = new TextEncoder();
-        const keyData = enc.encode(API_SECRET);
-        const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-        const signatureBuffer = await crypto.subtle.sign("HMAC", cryptoKey, enc.encode(dataStr));
-        return Array.from(new Uint8Array(signatureBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
+        // Core API Caller
+        async function apiCall(action, payload = {}) {
+            const timestamp = Date.now();
+            const signature = await generateSignature(action, payload, timestamp);
 
-    async function secureFetch(action, payload) {
-        logMessage(`Executing: ${action}`);
-        const timestamp = new Date().getTime();
-        const signature = await generateHMAC(action, payload, timestamp);
+            const requestBody = {
+                action,
+                payload,
+                timestamp,
+                signature
+            };
 
-        const requestBody = { action, payload, timestamp, signature };
+            try {
+                // 'text/plain' prevents CORS preflight OPTIONS request block on GAS
+                const response = await fetch(CONFIG.API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(requestBody),
+                    redirect: 'follow'
+                });
 
-        try {
-            const response = await fetch(API_ENDPOINT, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain" }, 
-                body: JSON.stringify(requestBody)
-            });
-
-            const result = await response.json();
-            if (result.status === "error") throw new Error(result.message);
-            return result.data;
-        } catch (error) {
-            logMessage(`<span style="color:red">ERROR: ${error.message}</span>`);
-            throw error;
+                const data = await response.json();
+                if (data.status === 'error') throw new Error(data.message);
+                return data.data;
+            } catch (error) {
+                console.error("API Error:", error);
+                throw error;
+            }
         }
-    }
 
-    async function submitLink() {
-        const url = document.getElementById('urlInput').value;
-        const expiry = document.getElementById('expiryInput').value;
-        if (!url || !expiry) return logMessage('<span style="color:yellow">Missing parameters.</span>');
+        // Action Handlers
+        async function addLink(e) {
+            e.preventDefault();
+            const urlInput = document.getElementById('url-input').value.trim();
+            if (!urlInput) return;
 
-        setButtonLoading('injectBtn', true, 'injectText');
+            setLoading('btn-submit', true, 'Extend to 2126', 'fa-wand-magic-sparkles');
 
-        try {
-            const result = await secureFetch('ADD_LINK', { url, expiry: parseInt(expiry) });
-            logMessage(`Successfully injected ID: ${result.id}`);
-            document.getElementById('urlInput').value = '';
-            document.getElementById('expiryInput').value = '';
-            await fetchLinks(); 
-        } catch (e) {
-            // Handled by logger
-        } finally {
-            setButtonLoading('injectBtn', false);
-            document.getElementById('injectText').innerText = "Encrypt & Inject";
-        }
-    }
+            // Extract expiry if exists to send as payload metadata
+            const expireMatch = urlInput.match(/expire=(\d+)/);
+            const originalExpiry = expireMatch ? expireMatch[1] : 'UNKNOWN';
 
-    async function fetchLinks() {
-        setButtonLoading('syncBtn', true);
-        try {
-            const links = await secureFetch('GET_LINKS', {});
-            const tbody = document.getElementById('linksBody');
-            tbody.innerHTML = '';
-
-            links.forEach(link => {
-                const tr = document.createElement('tr');
-                const dateStr = new Date(link.expiry * 1000).toLocaleDateString();
+            try {
+                const result = await apiCall('ADD_LINK', { 
+                    url: urlInput,
+                    expiry: originalExpiry
+                });
                 
-                let statusClass = "status-dead";
-                if (link.status === "ACTIVE") statusClass = "status-active";
-                if (link.status === "REFRESHED") statusClass = "status-refreshed";
-
-                tr.innerHTML = `
-                    <td style="font-size: 0.8em; color: var(--text-muted)">${link.id.substring(0,8)}</td>
-                    <td><a href="${link.originalUrl}" target="_blank" class="status-link" title="${link.originalUrl}">${link.originalUrl}</a></td>
-                    <td><a href="${link.updatedUrl}" target="_blank" class="status-link link-highlight" title="${link.updatedUrl}">${link.updatedUrl}</a></td>
-                    <td>${dateStr}</td>
-                    <td class="${statusClass}">${link.status}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-            logMessage(`Rendered ${links.length} database entries.`);
-        } catch (e) {
-        } finally {
-            setButtonLoading('syncBtn', false);
+                showNotification('URL successfully processed and encrypted in database.', 'success');
+                document.getElementById('url-input').value = '';
+                
+                // Refresh list automatically
+                fetchLinks();
+            } catch (error) {
+                showNotification(`Failed to add link: ${error.message}`, 'error');
+            } finally {
+                setLoading('btn-submit', false, 'Extend to 2126', 'fa-wand-magic-sparkles');
+            }
         }
-    }
 
-    async function pingHealth() {
-        setButtonLoading('pingBtn', true);
-        try {
-            logMessage(`<span style="color:var(--accent-cyan)">Initiating CDN vitality sweep...</span>`);
-            const results = await secureFetch('MONITOR_HEALTH', {});
-            logMessage(`Sweep complete. Alive: ${results.alive}, Dead: ${results.dead}`);
-            await fetchLinks(); 
-        } catch (e) {
-        } finally {
-            setButtonLoading('pingBtn', false);
+        async function fetchLinks() {
+            setLoading('btn-refresh', true, 'Load Links', 'fa-rotate');
+            try {
+                const links = await apiCall('GET_LINKS');
+                renderLinks(links);
+                showNotification('Database synchronized.', 'info');
+            } catch (error) {
+                showNotification(`Failed to load links: ${error.message}`, 'error');
+            } finally {
+                setLoading('btn-refresh', false, 'Load Links', 'fa-rotate');
+            }
         }
-    }
 
-    window.onload = fetchLinks;
-</script>
+        async function monitorHealth() {
+            setLoading('btn-health', true, 'Monitor Health', 'fa-heart-pulse');
+            try {
+                const stats = await apiCall('MONITOR_HEALTH');
+                showNotification(`Health check complete: ${stats.alive} Active, ${stats.dead} Dead.`, 'success');
+                fetchLinks(); // Reload to show updated statuses
+            } catch (error) {
+                showNotification(`Health check failed: ${error.message}`, 'error');
+            } finally {
+                setLoading('btn-health', false, 'Monitor Health', 'fa-heart-pulse');
+            }
+        }
 
+        // DOM Rendering
+        function getStatusBadge(status) {
+            if (status === 'ACTIVE') return `<span class="px-2 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded text-xs font-semibold tracking-wide">ACTIVE</span>`;
+            if (status === 'DEAD') return `<span class="px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded text-xs font-semibold tracking-wide">DEAD</span>`;
+            if (status === 'REFRESHED') return `<span class="px-2 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded text-xs font-semibold tracking-wide">REFRESHED</span>`;
+            return `<span class="px-2 py-1 bg-slate-700 text-slate-300 rounded text-xs">${status || 'UNKNOWN'}</span>`;
+        }
+
+        function renderLinks(links) {
+            const container = document.getElementById('links-container');
+            const count = document.getElementById('record-count');
+            
+            count.innerText = `${links.length} record${links.length !== 1 ? 's' : ''}`;
+            
+            if (links.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500 bg-slate-800/30 rounded-xl border border-slate-700 border-dashed">
+                        <i class="fa-solid fa-box-open text-3xl mb-3 opacity-50"></i>
+                        <p>Database is empty.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = links.reverse().map(link => `
+                <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 hover:border-slate-600 transition-colors shadow-sm group">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="text-xs text-slate-400 font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-fingerprint"></i> ID: ${link.id.substring(0,8)}...
+                        </div>
+                        ${getStatusBadge(link.status)}
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <!-- Original URL -->
+                        <div>
+                            <p class="text-xs text-slate-400 mb-1 uppercase tracking-wider font-semibold">Original URL (Exp: ${link.expiry})</p>
+                            <div class="flex items-center bg-slate-900/50 rounded border border-slate-700/50 p-2">
+                                <a href="${link.originalUrl}" target="_blank" class="text-sm text-slate-300 hover:text-brand-400 truncate-url transition" title="${link.originalUrl}">
+                                    ${link.originalUrl}
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 2126 URL -->
+                        <div>
+                            <p class="text-xs text-brand-500 mb-1 uppercase tracking-wider font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-infinity"></i> Year 2126 URL
+                            </p>
+                            <div class="flex items-center gap-2">
+                                <div class="flex-grow bg-brand-900/20 rounded border border-brand-500/30 p-2 overflow-hidden">
+                                    <a href="${link.updatedUrl}" target="_blank" class="text-sm text-brand-300 hover:text-brand-400 truncate-url transition" title="${link.updatedUrl}">
+                                        ${link.updatedUrl}
+                                    </a>
+                                </div>
+                                <button onclick='copyToClipboard(${JSON.stringify(link.updatedUrl)}, this)' class="bg-slate-700 hover:bg-slate-600 text-slate-300 p-2 rounded transition flex-shrink-0" title="Copy URL">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Auto-load on init
+        window.addEventListener('DOMContentLoaded', fetchLinks);
+    </script>
 </body>
 </html>
