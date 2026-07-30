@@ -10,119 +10,80 @@
             --card-blue: #141979;
             --accent-orange: #ff6600;
             --accent-glow: rgba(255, 102, 0, 0.4);
-            --accent-cyan: #00ffff; /* Added for Health Check Button */
+            --accent-cyan: #00ffff; 
             --text-main: #e0e6ed;
             --text-muted: #8892b0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
 
         body {
-            background-color: var(--bg-blue);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 40px 20px;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(20, 25, 121, 0.8) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255, 102, 0, 0.15) 0%, transparent 20%);
+            background-color: var(--bg-blue); color: var(--text-main);
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; padding: 40px 20px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(20, 25, 121, 0.8) 0%, transparent 20%),
+                              radial-gradient(circle at 90% 80%, rgba(255, 102, 0, 0.15) 0%, transparent 20%);
         }
 
-        .container { width: 100%; max-width: 900px; }
+        .container { width: 100%; max-width: 1000px; }
 
-        header {
-            margin-bottom: 40px;
-            text-align: center;
-            border-bottom: 2px solid var(--accent-orange);
-            padding-bottom: 20px;
-            box-shadow: 0 10px 30px -15px var(--accent-glow);
-        }
-
-        h1 {
-            color: var(--accent-orange);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
+        header { margin-bottom: 40px; text-align: center; border-bottom: 2px solid var(--accent-orange); padding-bottom: 20px; box-shadow: 0 10px 30px -15px var(--accent-glow); }
+        h1 { color: var(--accent-orange); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--accent-glow); }
 
         .panel {
-            background-color: var(--card-blue);
-            border: 1px solid rgba(255, 102, 0, 0.3);
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            position: relative;
+            background-color: var(--card-blue); border: 1px solid rgba(255, 102, 0, 0.3);
+            border-radius: 8px; padding: 25px; margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); position: relative;
         }
+        .panel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-orange), transparent); }
 
-        .panel::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--accent-orange);
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        input[type="text"], input[type="number"] {
-            width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--text-muted); color: white;
-            border-radius: 4px; margin-bottom: 20px; outline: none;
-        }
-
+        label { display: block; margin-bottom: 8px; color: var(--accent-orange); font-weight: bold; font-size: 0.9em; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--text-muted); color: white; border-radius: 4px; margin-bottom: 20px; outline: none; transition: border 0.3s;}
         input:focus { border-color: var(--accent-orange); box-shadow: 0 0 10px var(--accent-glow); }
 
         button {
-            background-color: transparent; color: var(--accent-orange);
-            border: 2px solid var(--accent-orange); padding: 12px 24px;
-            font-weight: bold; text-transform: uppercase; cursor: pointer;
-            border-radius: 4px; transition: all 0.3s ease;
+            background-color: transparent; color: var(--accent-orange); border: 2px solid var(--accent-orange); 
+            padding: 12px 24px; font-weight: bold; text-transform: uppercase; cursor: pointer;
+            border-radius: 4px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center;
         }
+        button:hover:not(:disabled) { background-color: var(--accent-orange); color: var(--bg-blue); }
+        button:disabled { opacity: 0.6; cursor: not-allowed; border-color: var(--text-muted); color: var(--text-muted); }
 
-        button:hover { background-color: var(--accent-orange); color: var(--bg-blue); }
-
-        .btn-small {
-            float: right; padding: 5px 10px; font-size: 0.8em; margin-left: 10px;
+        /* Loading Spinner */
+        .spinner {
+            display: none; width: 14px; height: 14px; border: 2px solid currentColor;
+            border-top: 2px solid transparent; border-radius: 50%;
+            animation: spin 1s linear infinite; margin-right: 8px;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        button.is-loading .spinner { display: inline-block; }
 
+        .btn-small { float: right; padding: 5px 10px; font-size: 0.8em; margin-left: 10px; }
         .btn-cyan { color: var(--accent-cyan); border-color: var(--accent-cyan); }
-        .btn-cyan:hover { background-color: var(--accent-cyan); color: var(--bg-blue); box-shadow: 0 0 10px var(--accent-cyan); }
+        .btn-cyan:hover:not(:disabled) { background-color: var(--accent-cyan); color: var(--bg-blue); box-shadow: 0 0 10px var(--accent-cyan); }
 
         .terminal {
-            background: #000; padding: 15px; border-radius: 4px;
-            border-left: 4px solid var(--accent-orange); font-size: 0.85em;
-            color: #0f0; max-height: 200px; overflow-y: auto; margin-top: 10px;
+            background: #000; padding: 15px; border-radius: 4px; border-left: 4px solid var(--accent-orange); 
+            font-size: 0.85em; color: #0f0; max-height: 200px; overflow-y: auto; margin-top: 10px;
         }
 
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; }
+        .data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .data-table th { color: var(--accent-orange); text-transform: uppercase; font-size: 0.85em; }
+        
+        /* Column Widths */
+        .col-hash { width: 12%; }
+        .col-link { width: 30%; }
+        .col-date { width: 18%; }
+        .col-status { width: 10%; }
 
-        /* Interactive Status Links */
-        .status-link {
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            transition: text-shadow 0.2s;
-        }
-        .status-link:hover { text-decoration: underline; text-shadow: 0 0 8px currentColor; }
+        .status-link { text-decoration: none; font-weight: normal; color: var(--text-muted); transition: color 0.2s; }
+        .status-link:hover { text-decoration: underline; color: white; }
+        .link-highlight { color: var(--accent-cyan); font-weight: bold; }
 
-        .status-active { color: #00ff00; }
-        .status-refreshed { color: var(--accent-cyan); }
-        .status-dead { color: #ff0000; }
+        .status-active { color: #00ff00; font-weight: bold; }
+        .status-refreshed { color: var(--accent-cyan); font-weight: bold; }
+        .status-dead { color: #ff0000; font-weight: bold; }
 
     </style>
 </head>
@@ -131,7 +92,7 @@
 <div class="container">
     <header>
         <h1>Zero-Trust CDN Automator</h1>
-        <p>Yr 2126 Config • HMAC-SHA256 • Vitality Ping Monitoring</p>
+        <p>Yr 2126 Config • HMAC-SHA256 • Dual Link Tracking</p>
     </header>
 
     <div class="panel">
@@ -141,24 +102,28 @@
         <input type="text" id="urlInput" placeholder="https://web.wootly.ch/source?id=...&expire=1785403180">
         
         <label>Current Expiry (Unix Timestamp)</label>
-        <input type="number" id="expiryInput" placeholder="4941163180">
+        <input type="number" id="expiryInput" placeholder="1785403180">
 
-        <button onclick="submitLink()">Encrypt & Inject</button>
+        <button id="injectBtn" onclick="submitLink()">
+            <span class="spinner"></span>
+            <span id="injectText">Encrypt & Inject</span>
+        </button>
     </div>
 
     <div class="panel">
         <h2>
             Active Link Matrix 
-            <button class="btn-small btn-cyan" onclick="pingHealth()">Ping Health</button>
-            <button class="btn-small" onclick="fetchLinks()">Sync DB</button>
+            <button class="btn-small btn-cyan" onclick="pingHealth()" id="pingBtn"><span class="spinner"></span><span class="btnText">Ping Health</span></button>
+            <button class="btn-small" onclick="fetchLinks()" id="syncBtn"><span class="spinner"></span><span class="btnText">Sync DB</span></button>
         </h2>
         <table class="data-table" id="linksTable">
             <thead>
                 <tr>
-                    <th>Hash ID</th>
-                    <th>Target</th>
-                    <th>Expiry Time</th>
-                    <th>Status</th>
+                    <th class="col-hash">Hash ID</th>
+                    <th class="col-link">Original Link</th>
+                    <th class="col-link">Yr 2126 Link</th>
+                    <th class="col-date">Original Expiry</th>
+                    <th class="col-status">Status</th>
                 </tr>
             </thead>
             <tbody id="linksBody">
@@ -176,7 +141,7 @@
 </div>
 
 <script>
-    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbwZ7u3pOzE9HOmLE_6AkLImfCHhT5eLmq_dR02tkzNcAHaraHOZZLFk7KqhN2ijpqg/exec";
+    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJGE727zEgmIn0zrSCywOsCIohRNdbc4znsZb7LPusH8Az_UeYHg6ehQ_W5Npg8tE_/exec";
     const API_SECRET = "0fc86192dc7fd8bfd7a0deab68571d324c015600c5c3861fa85622c7f2769feb";
 
     function logMessage(msg) {
@@ -184,6 +149,19 @@
         const time = new Date().toLocaleTimeString();
         terminal.innerHTML += `[${time}] ${msg}<br>`;
         terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // Controls the loading spinner and disables buttons
+    function setButtonLoading(btnId, isLoading, textId) {
+        const btn = document.getElementById(btnId);
+        if (isLoading) {
+            btn.classList.add('is-loading');
+            btn.disabled = true;
+            if(textId) document.getElementById(textId).innerText = "Processing...";
+        } else {
+            btn.classList.remove('is-loading');
+            btn.disabled = false;
+        }
     }
 
     async function generateHMAC(action, payload, timestamp) {
@@ -223,16 +201,24 @@
         const expiry = document.getElementById('expiryInput').value;
         if (!url || !expiry) return logMessage('<span style="color:yellow">Missing parameters.</span>');
 
+        setButtonLoading('injectBtn', true, 'injectText');
+
         try {
             const result = await secureFetch('ADD_LINK', { url, expiry: parseInt(expiry) });
             logMessage(`Successfully injected ID: ${result.id}`);
             document.getElementById('urlInput').value = '';
             document.getElementById('expiryInput').value = '';
-            fetchLinks(); 
-        } catch (e) {}
+            await fetchLinks(); 
+        } catch (e) {
+            // Handled by logger
+        } finally {
+            setButtonLoading('injectBtn', false);
+            document.getElementById('injectText').innerText = "Encrypt & Inject";
+        }
     }
 
     async function fetchLinks() {
+        setButtonLoading('syncBtn', true);
         try {
             const links = await secureFetch('GET_LINKS', {});
             const tbody = document.getElementById('linksBody');
@@ -240,39 +226,39 @@
 
             links.forEach(link => {
                 const tr = document.createElement('tr');
-                const dateStr = new Date(link.expiry * 1000).toLocaleString();
-                const safeUrl = link.url.substring(0, 30) + "...";
+                const dateStr = new Date(link.expiry * 1000).toLocaleDateString();
                 
-                // Determine CSS class based on text
                 let statusClass = "status-dead";
                 if (link.status === "ACTIVE") statusClass = "status-active";
                 if (link.status === "REFRESHED") statusClass = "status-refreshed";
 
-                // NEW: Status is now a clickable <a> tag linking to the decoded URL
                 tr.innerHTML = `
                     <td style="font-size: 0.8em; color: var(--text-muted)">${link.id.substring(0,8)}</td>
-                    <td>${safeUrl}</td>
+                    <td><a href="${link.originalUrl}" target="_blank" class="status-link" title="${link.originalUrl}">${link.originalUrl}</a></td>
+                    <td><a href="${link.updatedUrl}" target="_blank" class="status-link link-highlight" title="${link.updatedUrl}">${link.updatedUrl}</a></td>
                     <td>${dateStr}</td>
-                    <td>
-                        <a href="${link.url}" target="_blank" class="status-link ${statusClass}" title="Click to open link">
-                            ${link.status}
-                        </a>
-                    </td>
+                    <td class="${statusClass}">${link.status}</td>
                 `;
                 tbody.appendChild(tr);
             });
             logMessage(`Rendered ${links.length} database entries.`);
-        } catch (e) {}
+        } catch (e) {
+        } finally {
+            setButtonLoading('syncBtn', false);
+        }
     }
 
-    // NEW: Action to trigger backend ping sweep
     async function pingHealth() {
+        setButtonLoading('pingBtn', true);
         try {
             logMessage(`<span style="color:var(--accent-cyan)">Initiating CDN vitality sweep...</span>`);
             const results = await secureFetch('MONITOR_HEALTH', {});
             logMessage(`Sweep complete. Alive: ${results.alive}, Dead: ${results.dead}`);
-            fetchLinks(); // Auto-refresh table to show updated statuses
-        } catch (e) {}
+            await fetchLinks(); 
+        } catch (e) {
+        } finally {
+            setButtonLoading('pingBtn', false);
+        }
     }
 
     window.onload = fetchLinks;
